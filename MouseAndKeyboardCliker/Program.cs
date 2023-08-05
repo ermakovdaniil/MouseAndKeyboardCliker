@@ -16,13 +16,13 @@ namespace MouseAndKeyboardCliker
             int amountOfRecords = int.Parse(Console.ReadLine());
             int counter = 0;
 
+            // 1. Клик по ячейке Excel с названием номенклатуры
+            SetCursor(1340, 325);
+            LeftMouseClick();
+            Thread.Sleep(500);
+
             for (int i = 0; i < amountOfRecords; i++)
             {
-                // 1. Клик по ячейке Excel с названием номенклатуры
-                SetCursor(1340, 325);
-                LeftMouseClick();
-                Thread.Sleep(1000);
-
                 // 2. Получение данных из ячейки и копирование в буфер
                 GetCellData();
 
@@ -31,9 +31,10 @@ namespace MouseAndKeyboardCliker
                 SetCursor(200, 705);
                 if (i == 0)
                 {
-                    while (counter < 20) // Чтобы не обрабатывать сдвиги при добавлении записи
+                    while (counter < 22) // Чтобы не обрабатывать сдвиги при добавлении записи
                     {
                         LeftMouseClick();
+                        Thread.Sleep(500);
                         counter++;
                     }
                 }
@@ -42,7 +43,7 @@ namespace MouseAndKeyboardCliker
                 // 4. Установка курсора на поле "Номенклатура"
                 SetCursor(240, 985);            
                 LeftMouseDblClick();
-                Thread.Sleep(1000);
+                Thread.Sleep(500);
 
                 // 5. Вставка текста
                 UseContextMenu(290, 970);
@@ -50,7 +51,7 @@ namespace MouseAndKeyboardCliker
                 // 6. Выбор номенклатуры из списка
                 SetCursor(290, 920);
                 LeftMouseClick();
-                Thread.Sleep(1000);
+                Thread.Sleep(500);
 
                 // 7. Получение данных из следующей ячейки и копирование в буфер
                 GetCellData();
@@ -59,7 +60,7 @@ namespace MouseAndKeyboardCliker
                 SetCursor(750, 985);
                 LeftMouseDblClick();
                 LeftMouseDblClick();
-                Thread.Sleep(1000);
+                Thread.Sleep(500);
 
                 // 9. Вставка текста
                 UseContextMenu(800, 970);
@@ -71,7 +72,7 @@ namespace MouseAndKeyboardCliker
                 SetCursor(900, 985);
                 LeftMouseDblClick();
                 LeftMouseDblClick();
-                Thread.Sleep(1000);
+                Thread.Sleep(500);
 
                 // 12. Вставка текста
                 UseContextMenu(950, 970);
@@ -80,7 +81,7 @@ namespace MouseAndKeyboardCliker
                 SetCursor(1100, 985);
                 LeftMouseDblClick();
                 LeftMouseDblClick();
-                Thread.Sleep(1000);
+                Thread.Sleep(500);
 
                 // 14. Стирание текста
                 ClickKey(0x0e);
@@ -89,7 +90,8 @@ namespace MouseAndKeyboardCliker
                 GoToNextRecord();
             }
 
-            while (counter > 2) // Удаление пустых записей
+            // 16. Удаление пустых записей
+            while (counter > 0)
             {
                 DeleteRecord();
                 counter -= 2;
@@ -99,12 +101,12 @@ namespace MouseAndKeyboardCliker
 
         private static void UseContextMenu(int x, int y)
         {
-            Thread.Sleep(1000);
+            Thread.Sleep(500);
             RightMouseClick();
             SetCursor(x, y); // Установка курсора на контекстное меню
-            Thread.Sleep(1000);
+            Thread.Sleep(500);
             LeftMouseClick();
-            Thread.Sleep(1000);
+            Thread.Sleep(500);
         }
 
         private static void GetCellData()
@@ -112,18 +114,18 @@ namespace MouseAndKeyboardCliker
             // 1. Клик по полю с текстом ячейки
             SetCursor(1540, 190);
             LeftMouseDblClick();
-            Thread.Sleep(1000);
+            Thread.Sleep(500);
 
             // 2. Выбор всего текста в поле
             SelectAll();
-            Thread.Sleep(1000);
+            Thread.Sleep(500);
 
             // 3. Копирование текста
             UseContextMenu(1575, 230);
 
             // 4. Переход к след. ячейке
             ClickKey(0x0f);
-            Thread.Sleep(1000);
+            Thread.Sleep(500);
         }
 
         private static void GoToNextRecord()
@@ -131,29 +133,29 @@ namespace MouseAndKeyboardCliker
             // 1. Клик по полю с текстом ячейки
             SetCursor(1540, 190);
             LeftMouseClick();
-            Thread.Sleep(1000);
+            Thread.Sleep(500);
 
             // 2. Шаг на клетку вниз
             PressSpecButton(0x50);
-            Thread.Sleep(1000);
+            Thread.Sleep(500);
 
             // 3. Три шага на клетку влево
             PressSpecButton(0x4B);
-            Thread.Sleep(1000);
+            Thread.Sleep(500);
             PressSpecButton(0x4B);
-            Thread.Sleep(1000);
+            Thread.Sleep(500);
             PressSpecButton(0x4B);
-            Thread.Sleep(1000);
+            Thread.Sleep(500);
         }
 
         private static void DeleteRecord()
         {
             // 1. Установка курсора на запись
-            SetCursor(240, 985);
+            SetCursor(240, 760);
             LeftMouseClick();
 
             // 2. Удаление
-            ClickKey(0xD3);
+            UseContextMenu(280, 790);
         }
 
 
