@@ -12,33 +12,153 @@ namespace MouseAndKeyboardCliker
 
         public static void Main()
         {
-            SetCursor(198, 707); // Установка курсора на "Добавить"
+            Console.WriteLine("Укажите количество записей: ");
+            int amountOfRecords = int.Parse(Console.ReadLine());
+            int counter = 0;
+
+            for (int i = 0; i < amountOfRecords; i++)
+            {
+                // 1. Клик по ячейке Excel с названием номенклатуры
+                SetCursor(1340, 325);
+                LeftMouseClick();
+                Thread.Sleep(1000);
+
+                // 2. Получение данных из ячейки и копирование в буфер
+                GetCellData();
+
+                // Переход к 1C
+                // 3. Установка курсора на кнопку "Добавить"
+                SetCursor(200, 705);
+                if (i == 0)
+                {
+                    while (counter < 20) // Чтобы не обрабатывать сдвиги при добавлении записи
+                    {
+                        LeftMouseClick();
+                        counter++;
+                    }
+                }
+                LeftMouseClick();
+
+                // 4. Установка курсора на поле "Номенклатура"
+                SetCursor(240, 985);            
+                LeftMouseDblClick();
+                Thread.Sleep(1000);
+
+                // 5. Вставка текста
+                UseContextMenu(290, 970);
+
+                // 6. Выбор номенклатуры из списка
+                SetCursor(290, 920);
+                LeftMouseClick();
+                Thread.Sleep(1000);
+
+                // 7. Получение данных из следующей ячейки и копирование в буфер
+                GetCellData();
+
+                // 8. Установка курсора на поле "Количество" 
+                SetCursor(750, 985);
+                LeftMouseDblClick();
+                LeftMouseDblClick();
+                Thread.Sleep(1000);
+
+                // 9. Вставка текста
+                UseContextMenu(800, 970);
+
+                // 10. Получение данных из следующей ячейки и копирование в буфер
+                GetCellData();
+
+                // 11. Установка курсора на поле "Цена" 
+                SetCursor(900, 985);
+                LeftMouseDblClick();
+                LeftMouseDblClick();
+                Thread.Sleep(1000);
+
+                // 12. Вставка текста
+                UseContextMenu(950, 970);
+
+                // 13. Установка курсора на поле "Цена передачи" 
+                SetCursor(1100, 985);
+                LeftMouseDblClick();
+                LeftMouseDblClick();
+                Thread.Sleep(1000);
+
+                // 14. Стирание текста
+                ClickKey(0x0e);
+
+                // 15. Переход к следующей записи
+                GoToNextRecord();
+            }
+
+            while (counter > 2) // Удаление пустых записей
+            {
+                DeleteRecord();
+                counter -= 2;
+            }
+
+        }
+
+        private static void UseContextMenu(int x, int y)
+        {
+            Thread.Sleep(1000);
+            RightMouseClick();
+            SetCursor(x, y); // Установка курсора на контекстное меню
+            Thread.Sleep(1000);
+            LeftMouseClick();
+            Thread.Sleep(1000);
+        }
+
+        private static void GetCellData()
+        {
+            // 1. Клик по полю с текстом ячейки
+            SetCursor(1540, 190);
+            LeftMouseDblClick();
+            Thread.Sleep(1000);
+
+            // 2. Выбор всего текста в поле
+            SelectAll();
+            Thread.Sleep(1000);
+
+            // 3. Копирование текста
+            UseContextMenu(1575, 230);
+
+            // 4. Переход к след. ячейке
+            ClickKey(0x0f);
+            Thread.Sleep(1000);
+        }
+
+        private static void GoToNextRecord()
+        {
+            // 1. Клик по полю с текстом ячейки
+            SetCursor(1540, 190);
+            LeftMouseClick();
+            Thread.Sleep(1000);
+
+            // 2. Шаг на клетку вниз
+            PressSpecButton(0x50);
+            Thread.Sleep(1000);
+
+            // 3. Три шага на клетку влево
+            PressSpecButton(0x4B);
+            Thread.Sleep(1000);
+            PressSpecButton(0x4B);
+            Thread.Sleep(1000);
+            PressSpecButton(0x4B);
+            Thread.Sleep(1000);
+        }
+
+        private static void DeleteRecord()
+        {
+            // 1. Установка курсора на запись
+            SetCursor(240, 985);
             LeftMouseClick();
 
-            SetCursor(1340, 310); // Установка курсора на ячейку Excel с названием номенклатуры
-            LeftMouseClick();
-
-            goToExcel(); // Переход в Excel
-            SelectAll(); // Выбор всего текста в поле
-            CopyToBuffer(); // Копирование текста
-
-
-            SetCursor(290, 779); // Установка курсора на поле с названием
-            InsertInOneC(); // Вставка текста
-
-            goToExcel();
-            pressTAB();
-            goToExcel(); // Переход в Excel
-            SelectAll(); // Выбор всего текста в поле
-            CopyToBuffer(); // Копирование текста
-
-            SetCursor(290, 779); // Установка курсора на поле с названием
-            pressTAB();
-            InsertInOneC(); // Вставка текста
+            // 2. Удаление
+            ClickKey(0xD3);
         }
 
 
         #region Мышь
+
         private static void SetCursor(int x, int y)
         {
             SetCursorPosition(x, y);
@@ -80,12 +200,6 @@ namespace MouseAndKeyboardCliker
             LeftMouseClick();
         }
 
-        private static void goToExcel()
-        {
-            SetCursor(1572, 210); // Установка курсора на поле с текстом
-            LeftMouseClick();
-        }
-
         private static void SelectAll()
         {
             LeftMouseClick();
@@ -93,55 +207,39 @@ namespace MouseAndKeyboardCliker
             LeftMouseClick();
         }
 
-        private static void CopyToBuffer()
-        {
-            RightMouseClick();
-            SetCursor(1560, 221);
-            LeftMouseClick();
-        }
-
-        private static void InsertInOneC()
-        {
-            LeftMouseDblClick();
-            RightMouseClick();
-            SetCursor(290, 779);
-            LeftMouseClick();
-
-            Thread.Sleep(1000);
-
-            SetCursor(326, 806);
-            LeftMouseClick();
-        }
-
-
-
         #endregion
 
 
         #region Клавиатура
+       
+        // https://gist.github.com/dretax/fe37b8baf55bc30e9d63
+        //private static void ClickKey(ushort code)
+        //{
+        //    SendKeyboardInput(new KeyboardInput[]
+        //    {
+        //        new KeyboardInput
+        //        {
+        //            wScan = code,
+        //            dwFlags = (uint)(KeyEventF.ExtendedKey | KeyEventF.Scancode)
+        //        }
+        //    });
+        //}
 
-        private static void pressTAB() // https://gist.github.com/dretax/fe37b8baf55bc30e9d63
+        private static void PressSpecButton(ushort code)
         {
             SendKeyboardInput(new KeyboardInput[]
             {
                 new KeyboardInput
                 {
-                    wScan = 0x0F,
-                    dwFlags = (uint)(KeyEventF.ExtendedKey | KeyEventF.Scancode)
-                }
-            });
-        }
-
-        private static void pressArrow(ushort code)
-        {
-            SendKeyboardInput(new KeyboardInput[]
-{
+                    wScan = 0xe0,
+                    dwFlags = (uint)(KeyEventF.ExtendedKey | KeyEventF.Scancode),
+                },
                 new KeyboardInput
                 {
                     wScan = code,
                     dwFlags = (uint)(KeyEventF.ExtendedKey | KeyEventF.Scancode)
                 }
-});
+            });
         }
 
         #endregion
