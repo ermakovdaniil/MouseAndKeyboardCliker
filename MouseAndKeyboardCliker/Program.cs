@@ -10,7 +10,12 @@ namespace MouseAndKeyboardCliker
         [DllImport("user32.dll")]
         private static extern IntPtr GetMessageExtraInfo();
 
-        private enum modes { realization = 1, detalization }
+        private enum Modes { realization = 1, detalization }
+
+        private static int stepTime = 430;
+
+        private static CoordStruct excelCell = new CoordStruct(1340, 325);
+        private static CoordStruct excelTextField = new CoordStruct(1540, 190, 1575, 230);
 
         public static void Main() // TODO: сделать два набора чисел и менять просто в одном свитче
         {
@@ -19,12 +24,82 @@ namespace MouseAndKeyboardCliker
             int mode = int.Parse(Console.ReadLine());
             Console.WriteLine("\nУкажите количество записей: ");
             int amountOfRecords = int.Parse(Console.ReadLine());
+            
             int counter = 0;
 
+            var addButton = new CoordStruct();
+            var nomenclature = new CoordStruct();
+            var amount = new CoordStruct();
+            var price = new CoordStruct();
+            var transferPrice = new CoordStruct();
+
+            switch (mode)
+            {
+                case (int)Modes.realization:
+                    addButton.field_X = 160;
+                    addButton.field_Y = 700;
+
+                    nomenclature.field_X = 240;
+                    nomenclature.field_Y = 940;
+
+                    nomenclature.contextMenuInsert_X = 280;
+                    nomenclature.contextMenuInsert_Y = 970;
+
+                    nomenclature.list_X = 280;
+                    nomenclature.list_Y = 970;
+
+                    amount.field_X = 750;
+                    amount.field_Y = 940;
+
+                    amount.contextMenuInsert_X = 800;
+                    amount.contextMenuInsert_Y = 970;
+
+                    price.field_X = 1015;
+                    price.field_Y = 940;
+
+                    price.contextMenuInsert_X = 1055;
+                    price.contextMenuInsert_Y = 970;
+
+                    break;
+
+                case (int)Modes.detalization:
+                    addButton.field_X = 200;
+                    addButton.field_Y = 705;
+
+                    nomenclature.field_X = 240;
+                    nomenclature.field_Y = 960;
+
+                    nomenclature.contextMenuInsert_X = 290;
+                    nomenclature.contextMenuInsert_Y = 980;
+
+                    nomenclature.list_X = 290;
+                    nomenclature.list_Y = 980;
+
+                    amount.field_X = 750;
+                    amount.field_Y = 960;
+
+                    amount.contextMenuInsert_X = 800;
+                    amount.contextMenuInsert_Y = 980;
+
+                    price.field_X = 900;
+                    price.field_Y = 960;
+
+                    price.contextMenuInsert_X = 950;
+                    price.contextMenuInsert_Y = 970;
+
+                    transferPrice.field_X = 1100;
+                    transferPrice.field_Y = 960;
+
+                    break;
+
+                default:
+                    break;
+            }
+
             // 1. Клик по ячейке Excel с названием номенклатуры
-            SetCursor(1340, 325);
+            SetCursor(excelCell.field_X, excelCell.field_Y);
             LeftMouseClick();
-            Thread.Sleep(430);
+            Thread.Sleep(stepTime);
 
             for (int i = 0; i < amountOfRecords; i++)
             {
@@ -33,137 +108,75 @@ namespace MouseAndKeyboardCliker
 
                 // Переход к 1C
                 // 3. Установка курсора на кнопку "Добавить"
-                switch (mode)
-                {
-                    case (int)modes.realization:
-                        SetCursor(160, 700);
-                        break;
-                    case (int)modes.detalization:
-                        SetCursor(200, 705);
-                        break;
-                    default:
-                        break;
-                }
+                SetCursor(addButton.field_X, addButton.field_Y);
 
                 if (i == 0)
                 {
                     while (counter < 22) // Чтобы не обрабатывать сдвиги при добавлении записи
                     {
                         LeftMouseClick();
-                        Thread.Sleep(430);
+                        Thread.Sleep(stepTime);
                         counter++;
                     }
                 }
                 LeftMouseClick();
 
                 // 4. Установка курсора на поле "Номенклатура"
-                switch (mode)
-                {
-                    case (int)modes.realization:
-                        SetCursor(240, 940);
-                        break;
-                    case (int)modes.detalization:
-                        SetCursor(240, 960);
-                        break;
-                    default:
-                        break;
-                }    
+                SetCursor(nomenclature.field_X, nomenclature.field_Y);
                 LeftMouseDblClick();
-                Thread.Sleep(430);
+                Thread.Sleep(stepTime);
 
                 // 5. Вставка текста
-                UseContextMenu(280, 970);
+                UseContextMenu(nomenclature.contextMenuInsert_X, nomenclature.contextMenuInsert_Y);
 
                 // 6. Выбор номенклатуры из списка
-                switch (mode)
-                {
-                    case (int)modes.realization:
-                        SetCursor(280, 970);
-                        break;
-                    case (int)modes.detalization:
-                        SetCursor(290, 980);
-                        break;
-                    default:
-                        break;
-                }
-
+                SetCursor(nomenclature.list_X, nomenclature.list_Y);
                 LeftMouseClick();
-                Thread.Sleep(430);
+                Thread.Sleep(stepTime);
 
                 // 7. Получение данных из следующей ячейки и копирование в буфер
                 GetCellData();
 
                 // 8. Установка курсора на поле "Количество" 
-                switch (mode)
-                {
-                    case (int)modes.realization:
-                        SetCursor(750, 940);
-                        break;
-                    case (int)modes.detalization:
-                        SetCursor(750, 960);
-                        break;
-                    default:
-                        break;
-                }
+                SetCursor(amount.list_X, amount.list_Y);
                 LeftMouseDblClick();
                 LeftMouseDblClick();
-                Thread.Sleep(430);
+                Thread.Sleep(stepTime);
 
                 // 9. Вставка текста
-                UseContextMenu(800, 970);
+                UseContextMenu(amount.contextMenuInsert_X, amount.contextMenuInsert_Y);
 
                 // 10. Получение данных из следующей ячейки и копирование в буфер
                 GetCellData();
 
                 // 11. Установка курсора на поле "Цена"
-                switch (mode)
-                {
-                    case (int)modes.realization:
-                        SetCursor(1015, 940);
-                        break;
-                    case (int)modes.detalization:
-                        SetCursor(900, 960);
-                        break;
-                    default:
-                        break;
-                }              
+                SetCursor(price.list_X, price.list_Y);
                 LeftMouseDblClick();
                 LeftMouseDblClick();
-                Thread.Sleep(430);
+                Thread.Sleep(stepTime);
 
                 // 12. Вставка текста
-                switch (mode)
-                {
-                    case (int)modes.realization:
-                        UseContextMenu(1055, 970);
-                        break;
-                    case (int)modes.detalization:
-                        UseContextMenu(950, 970);
-                        break;
-                    default:
-                        break;
-                }
-                
-
+                UseContextMenu(price.contextMenuInsert_X, price.contextMenuInsert_Y);
 
                 switch (mode)
                 {
-                    case (int)modes.realization:
+                    case (int)Modes.realization:
                         break;
-                    case (int)modes.detalization:
+
+                    case (int)Modes.detalization:
                         // 13. Установка курсора на поле "Цена передачи" 
-                        SetCursor(1100, 960);
+                        SetCursor(transferPrice.field_X, transferPrice.field_Y);
                         LeftMouseDblClick();
                         LeftMouseDblClick();
-                        Thread.Sleep(430);
+                        Thread.Sleep(stepTime);
 
                         // 14. Стирание текста
                         ClickKey(0x0e);
                         break;
+
                     default:
                         break;
                 }
-
 
                 // 15. Переход к следующей записи
                 GoToNextRecord();
@@ -180,51 +193,51 @@ namespace MouseAndKeyboardCliker
 
         private static void UseContextMenu(int x, int y)
         {
-            Thread.Sleep(430);
+            Thread.Sleep(stepTime);
             RightMouseClick();
             SetCursor(x, y); // Установка курсора на контекстное меню
-            Thread.Sleep(430);
+            Thread.Sleep(stepTime);
             LeftMouseClick();
-            Thread.Sleep(430);
+            Thread.Sleep(stepTime);
         }
 
         private static void GetCellData()
         {
             // 1. Клик по полю с текстом ячейки
-            SetCursor(1540, 190);
+            SetCursor(excelTextField.field_X, excelTextField.field_Y);
             LeftMouseDblClick();
-            Thread.Sleep(430);
+            Thread.Sleep(stepTime);
 
             // 2. Выбор всего текста в поле
             SelectAll();
-            Thread.Sleep(430);
+            Thread.Sleep(stepTime);
 
             // 3. Копирование текста
-            UseContextMenu(1575, 230);
+            UseContextMenu(excelTextField.contextMenuInsert_X, excelTextField.contextMenuInsert_Y);
 
             // 4. Переход к след. ячейке
             ClickKey(0x0f);
-            Thread.Sleep(430);
+            Thread.Sleep(stepTime);
         }
 
         private static void GoToNextRecord()
         {
             // 1. Клик по полю с текстом ячейки
-            SetCursor(1540, 190);
+            SetCursor(excelTextField.field_X, excelTextField.field_Y);
             LeftMouseClick();
-            Thread.Sleep(430);
+            Thread.Sleep(stepTime);
 
             // 2. Шаг на клетку вниз
             PressSpecButton(0x50);
-            Thread.Sleep(430);
+            Thread.Sleep(stepTime);
 
             // 3. Три шага на клетку влево
             PressSpecButton(0x4B);
-            Thread.Sleep(430);
+            Thread.Sleep(stepTime);
             PressSpecButton(0x4B);
-            Thread.Sleep(430);
+            Thread.Sleep(stepTime);
             PressSpecButton(0x4B);
-            Thread.Sleep(430);
+            Thread.Sleep(stepTime);
         }
 
         private static void DeleteRecord()
