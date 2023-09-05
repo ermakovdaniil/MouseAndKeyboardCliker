@@ -10,6 +10,8 @@ namespace MouseAndKeyboardCliker
         [DllImport("user32.dll")]
         private static extern IntPtr GetMessageExtraInfo();
 
+        private enum ScreenResolution { DCI2K = 1, FullHD } // DCI2K (2560x1440), FullHD (1980x1080)
+
         private enum Modes { realization = 1, detalization }
 
         private static int stepTime = 430;
@@ -89,6 +91,45 @@ namespace MouseAndKeyboardCliker
 
                     transferPrice.field_X = 1100;
                     transferPrice.field_Y = 960;
+
+                    break;
+
+                default:
+                    break;
+            }
+
+            switch (mode)
+            {
+                case (int)ScreenResolution.DCI2K:
+                    break;
+
+                case (int)ScreenResolution.FullHD:
+                    addButton.field_X = addButton.field_X * 1980 / 2480;
+                    addButton.field_Y = addButton.field_Y * 1080 / 1440;
+
+                    nomenclature.field_X = nomenclature.field_X * 1980 / 2480;
+                    nomenclature.field_Y = nomenclature.field_Y * 1080 / 1440;
+
+                    nomenclature.contextMenuInsert_X = nomenclature.contextMenuInsert_X * 1980 / 2480;
+                    nomenclature.contextMenuInsert_Y = nomenclature.contextMenuInsert_Y * 1080 / 1440;
+
+                    nomenclature.list_X = nomenclature.list_X * 1980 / 2480;
+                    nomenclature.list_Y = nomenclature.list_Y * 1080 / 1440;
+
+                    amount.field_X = amount.field_X * 1980 / 2480;
+                    amount.field_Y = amount.field_Y * 1080 / 1440;
+
+                    amount.contextMenuInsert_X = amount.contextMenuInsert_X * 1980 / 2480;
+                    amount.contextMenuInsert_Y = amount.contextMenuInsert_Y * 1080 / 1440;
+
+                    price.field_X = price.field_X * 1980 / 2480;
+                    price.field_Y = price.field_Y * 1080 / 1440;
+
+                    price.contextMenuInsert_X = price.contextMenuInsert_X * 1980 / 2480;
+                    price.contextMenuInsert_Y = price.contextMenuInsert_Y * 1080 / 1440;
+
+                    transferPrice.field_X = transferPrice.field_X * 1980 / 2480;
+                    transferPrice.field_Y = transferPrice.field_Y * 1080 / 1440;
 
                     break;
 
