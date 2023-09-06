@@ -110,10 +110,10 @@ namespace MouseAndKeyboardCliker
 
                 case (int)ScreenResolution.FullHD:
 
-                    excelCell.field_X = excelCell.field_X * 1980 / 2480;
+                    excelCell.field_X = excelCell.field_X * 1980 / 2480; 
                     excelCell.field_Y = excelCell.field_Y * 1080 / 1440;
 
-                    excelTextField.field_X = excelTextField.field_X * 1980 / 2480;
+                    excelTextField.field_X = excelTextField.field_X * 1980 / 2480; // 1220 180 и 1540 190
                     excelTextField.field_Y = excelTextField.field_Y * 1080 / 1440;
 
                     excelTextField.contextMenuInsert_X = excelTextField.contextMenuInsert_X * 1980 / 2480;
