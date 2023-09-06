@@ -16,14 +16,19 @@ namespace MouseAndKeyboardCliker
 
         private static int stepTime = 430;
 
-        private static CoordStruct excelCell = new CoordStruct(1340, 325);
+        private static CoordStruct excelCell = new CoordStruct(1340, 325); // TODO
         private static CoordStruct excelTextField = new CoordStruct(1540, 190, 1575, 230);
 
-        public static void Main() // TODO: сделать два набора чисел и менять просто в одном свитче
+        public static void Main()
         {
+            Console.WriteLine("Разрешение экрана: ");
+            Console.WriteLine("1. 2560x1440 | 2. 1980x1080 ");
+            int resolution = int.Parse(Console.ReadLine());
+
             Console.WriteLine("Режим работы: ");
             Console.WriteLine("1. Реализация | 2. Детализация за неделю ");
             int mode = int.Parse(Console.ReadLine());
+
             Console.WriteLine("\nУкажите количество записей: ");
             int amountOfRecords = int.Parse(Console.ReadLine());
             
@@ -44,23 +49,23 @@ namespace MouseAndKeyboardCliker
                     nomenclature.field_X = 240;
                     nomenclature.field_Y = 940;
 
-                    nomenclature.contextMenuInsert_X = 280;
-                    nomenclature.contextMenuInsert_Y = 970;
+                    nomenclature.contextMenuInsert_X = nomenclature.field_X + 40;
+                    nomenclature.contextMenuInsert_Y = nomenclature.field_Y + 30;
 
                     nomenclature.list_X = 280;
                     nomenclature.list_Y = 970;
 
                     amount.field_X = 750;
-                    amount.field_Y = 940;
+                    amount.field_Y = nomenclature.field_Y;
 
                     amount.contextMenuInsert_X = 800;
-                    amount.contextMenuInsert_Y = 970;
+                    amount.contextMenuInsert_Y = nomenclature.contextMenuInsert_Y;
 
                     price.field_X = 1015;
-                    price.field_Y = 940;
+                    price.field_Y = nomenclature.field_Y;
 
                     price.contextMenuInsert_X = 1055;
-                    price.contextMenuInsert_Y = 970;
+                    price.contextMenuInsert_Y = nomenclature.contextMenuInsert_Y;
 
                     break;
 
@@ -68,29 +73,29 @@ namespace MouseAndKeyboardCliker
                     addButton.field_X = 200;
                     addButton.field_Y = 705;
 
-                    nomenclature.field_X = 240;
-                    nomenclature.field_Y = 960;
+                    nomenclature.field_X = 250;
+                    nomenclature.field_Y = 990;
 
-                    nomenclature.contextMenuInsert_X = 290;
-                    nomenclature.contextMenuInsert_Y = 980;
+                    nomenclature.contextMenuInsert_X = nomenclature.field_X + 50;
+                    nomenclature.contextMenuInsert_Y = nomenclature.field_Y - 20;
 
-                    nomenclature.list_X = 290;
-                    nomenclature.list_Y = 980;
+                    nomenclature.list_X = 300;
+                    nomenclature.list_Y = 920;
 
                     amount.field_X = 750;
-                    amount.field_Y = 960;
+                    amount.field_Y = nomenclature.field_Y;
 
                     amount.contextMenuInsert_X = 800;
-                    amount.contextMenuInsert_Y = 980;
+                    amount.contextMenuInsert_Y = nomenclature.contextMenuInsert_Y;
 
                     price.field_X = 900;
-                    price.field_Y = 960;
+                    price.field_Y = nomenclature.field_Y;
 
                     price.contextMenuInsert_X = 950;
-                    price.contextMenuInsert_Y = 970;
+                    price.contextMenuInsert_Y = nomenclature.contextMenuInsert_Y;
 
                     transferPrice.field_X = 1100;
-                    transferPrice.field_Y = 960;
+                    transferPrice.field_Y = nomenclature.field_Y;
 
                     break;
 
@@ -98,12 +103,22 @@ namespace MouseAndKeyboardCliker
                     break;
             }
 
-            switch (mode)
+            switch (resolution)
             {
                 case (int)ScreenResolution.DCI2K:
                     break;
 
                 case (int)ScreenResolution.FullHD:
+
+                    excelCell.field_X = excelCell.field_X * 1980 / 2480;
+                    excelCell.field_Y = excelCell.field_Y * 1080 / 1440;
+
+                    excelTextField.field_X = excelTextField.field_X * 1980 / 2480;
+                    excelTextField.field_Y = excelTextField.field_Y * 1080 / 1440;
+
+                    excelTextField.contextMenuInsert_X = excelTextField.contextMenuInsert_X * 1980 / 2480;
+                    excelTextField.contextMenuInsert_Y = excelTextField.contextMenuInsert_Y * 1080 / 1440;
+
                     addButton.field_X = addButton.field_X * 1980 / 2480;
                     addButton.field_Y = addButton.field_Y * 1080 / 1440;
 
@@ -179,7 +194,7 @@ namespace MouseAndKeyboardCliker
                 GetCellData();
 
                 // 8. Установка курсора на поле "Количество" 
-                SetCursor(amount.list_X, amount.list_Y);
+                SetCursor(amount.field_X, amount.field_Y);
                 LeftMouseDblClick();
                 LeftMouseDblClick();
                 Thread.Sleep(stepTime);
@@ -191,7 +206,7 @@ namespace MouseAndKeyboardCliker
                 GetCellData();
 
                 // 11. Установка курсора на поле "Цена"
-                SetCursor(price.list_X, price.list_Y);
+                SetCursor(price.field_X, price.field_Y);
                 LeftMouseDblClick();
                 LeftMouseDblClick();
                 Thread.Sleep(stepTime);
