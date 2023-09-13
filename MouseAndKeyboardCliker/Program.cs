@@ -5,238 +5,244 @@ using static MouseAndKeyboardCliker.InputSender;
 
 namespace MouseAndKeyboardCliker
 {
-    class Program
+    public class Program
     {
         [DllImport("user32.dll")]
         private static extern IntPtr GetMessageExtraInfo();
 
-        private enum ScreenResolution { DCI2K = 1, FullHD } // DCI2K (2560x1440), FullHD (1980x1080)
+        public enum ScreenResolutions { QuadHD = 1, FullHD } // DCI2K (2560x1440), FullHD (1980x1080)
 
-        private enum Modes { realization = 1, detalization }
+        public enum Modes { realization = 1, detalization }
 
-        private static int stepTime = 430;
 
-        private static CoordStruct excelCell = new CoordStruct(1340, 325); // TODO
-        private static CoordStruct excelTextField = new CoordStruct(1540, 190, 1575, 230);
+
+        //private static ElementCoords excelCell = new ElementCoords(1340, 325); // TODO
+        //private static ElementCoords excelTextField = new ElementCoords(1540, 190, 1575, 230);
 
         public static void Main()
         {
             Console.WriteLine("Разрешение экрана: ");
             Console.WriteLine("1. 2560x1440 | 2. 1980x1080 ");
-            int resolution = int.Parse(Console.ReadLine());
+            var resolution = (ScreenResolutions)Enum.Parse(typeof(ScreenResolutions), Console.ReadLine());
 
             Console.WriteLine("Режим работы: ");
             Console.WriteLine("1. Реализация | 2. Детализация за неделю ");
-            int mode = int.Parse(Console.ReadLine());
+            var mode = (Modes)Enum.Parse(typeof(Modes), Console.ReadLine());
 
             Console.WriteLine("\nУкажите количество записей: ");
             int amountOfRecords = int.Parse(Console.ReadLine());
             
             int counter = 0;
 
-            var addButton = new CoordStruct();
-            var nomenclature = new CoordStruct();
-            var amount = new CoordStruct();
-            var price = new CoordStruct();
-            var transferPrice = new CoordStruct();
+            var resMode = ResolutionModeFactory.Create(resolution, mode);
 
-            switch (mode)
-            {
-                case (int)Modes.realization:
-                    addButton.field_X = 160;
-                    addButton.field_Y = 700;
+            var ClickerAlg = AlgFactory.Create(resMode, mode);
 
-                    nomenclature.field_X = 240;
-                    nomenclature.field_Y = 940;
+            ClickerAlg.RunAlg(resMode, amountOfRecords);
 
-                    nomenclature.contextMenuInsert_X = nomenclature.field_X + 40;
-                    nomenclature.contextMenuInsert_Y = nomenclature.field_Y + 30;
+            //var addButton = new ElementCoords();
+            //var nomenclature = new ElementCoords();
+            //var amount = new ElementCoords();
+            //var price = new ElementCoords();
+            //var transferPrice = new ElementCoords();
 
-                    nomenclature.list_X = 280;
-                    nomenclature.list_Y = 970;
+            //switch (mode)
+            //{
+            //    case Modes.realization:
+            //        addButton.Field_X = 160;
+            //        addButton.Field_Y = 700;
 
-                    amount.field_X = 750;
-                    amount.field_Y = nomenclature.field_Y;
+            //        nomenclature.Field_X = 240;
+            //        nomenclature.Field_Y = 940;
 
-                    amount.contextMenuInsert_X = 800;
-                    amount.contextMenuInsert_Y = nomenclature.contextMenuInsert_Y;
+            //        nomenclature.ContextMenuInsert_X = nomenclature.Field_X + 40;
+            //        nomenclature.ContextMenuInsert_Y = nomenclature.Field_Y + 30;
 
-                    price.field_X = 1015;
-                    price.field_Y = nomenclature.field_Y;
+            //        nomenclature.List_X = 280;
+            //        nomenclature.List_Y = 970;
 
-                    price.contextMenuInsert_X = 1055;
-                    price.contextMenuInsert_Y = nomenclature.contextMenuInsert_Y;
+            //        amount.Field_X = 750;
+            //        amount.Field_Y = nomenclature.Field_Y;
 
-                    break;
+            //        amount.ContextMenuInsert_X = 800;
+            //        amount.ContextMenuInsert_Y = nomenclature.ContextMenuInsert_Y;
 
-                case (int)Modes.detalization:
-                    addButton.field_X = 200;
-                    addButton.field_Y = 705;
+            //        price.Field_X = 1015;
+            //        price.Field_Y = nomenclature.Field_Y;
 
-                    nomenclature.field_X = 250;
-                    nomenclature.field_Y = 990;
+            //        price.ContextMenuInsert_X = 1055;
+            //        price.ContextMenuInsert_Y = nomenclature.ContextMenuInsert_Y;
 
-                    nomenclature.contextMenuInsert_X = nomenclature.field_X + 50;
-                    nomenclature.contextMenuInsert_Y = nomenclature.field_Y - 20;
+            //        break;
 
-                    nomenclature.list_X = 300;
-                    nomenclature.list_Y = 920;
+            //    case Modes.detalization:
+            //        addButton.Field_X = 200;
+            //        addButton.Field_Y = 705;
 
-                    amount.field_X = 750;
-                    amount.field_Y = nomenclature.field_Y;
+            //        nomenclature.Field_X = 250;
+            //        nomenclature.Field_Y = 990;
 
-                    amount.contextMenuInsert_X = 800;
-                    amount.contextMenuInsert_Y = nomenclature.contextMenuInsert_Y;
+            //        nomenclature.ContextMenuInsert_X = nomenclature.Field_X + 50;
+            //        nomenclature.ContextMenuInsert_Y = nomenclature.Field_Y - 20;
 
-                    price.field_X = 900;
-                    price.field_Y = nomenclature.field_Y;
+            //        nomenclature.List_X = 300;
+            //        nomenclature.List_Y = 920;
 
-                    price.contextMenuInsert_X = 950;
-                    price.contextMenuInsert_Y = nomenclature.contextMenuInsert_Y;
+            //        amount.Field_X = 750;
+            //        amount.Field_Y = nomenclature.Field_Y;
 
-                    transferPrice.field_X = 1100;
-                    transferPrice.field_Y = nomenclature.field_Y;
+            //        amount.ContextMenuInsert_X = 800;
+            //        amount.ContextMenuInsert_Y = nomenclature.ContextMenuInsert_Y;
 
-                    break;
+            //        price.Field_X = 900;
+            //        price.Field_Y = nomenclature.Field_Y;
 
-                default:
-                    break;
-            }
+            //        price.ContextMenuInsert_X = 950;
+            //        price.ContextMenuInsert_Y = nomenclature.ContextMenuInsert_Y;
 
-            switch (resolution)
-            {
-                case (int)ScreenResolution.DCI2K:
-                    break;
+            //        transferPrice.Field_X = 1100;
+            //        transferPrice.Field_Y = nomenclature.Field_Y;
 
-                case (int)ScreenResolution.FullHD:
+            //        break;
 
-                    excelCell.field_X = excelCell.field_X * 1980 / 2480;
-                    excelCell.field_Y = excelCell.field_Y * 1080 / 1440;
+            //    default:
+            //        break;
+            //}
 
-                    excelTextField.field_X = excelTextField.field_X * 1980 / 2480;
-                    excelTextField.field_Y = excelTextField.field_Y * 1080 / 1440;
+            //switch (resolution)
+            //{
+            //    case ScreenResolutions.DCI2K:
+            //        break;
 
-                    excelTextField.contextMenuInsert_X = excelTextField.contextMenuInsert_X * 1980 / 2480;
-                    excelTextField.contextMenuInsert_Y = excelTextField.contextMenuInsert_Y * 1080 / 1440;
+            //    case ScreenResolutions.FullHD:
 
-                    addButton.field_X = addButton.field_X * 1980 / 2480;
-                    addButton.field_Y = addButton.field_Y * 1080 / 1440;
+            //        excelCell.Field_X = excelCell.Field_X * 1980 / 2480;
+            //        excelCell.Field_Y = excelCell.Field_Y * 1080 / 1440;
 
-                    nomenclature.field_X = nomenclature.field_X * 1980 / 2480;
-                    nomenclature.field_Y = nomenclature.field_Y * 1080 / 1440;
+            //        excelTextField.Field_X = excelTextField.Field_X * 1980 / 2480;
+            //        excelTextField.Field_Y = excelTextField.Field_Y * 1080 / 1440;
 
-                    nomenclature.contextMenuInsert_X = nomenclature.contextMenuInsert_X * 1980 / 2480;
-                    nomenclature.contextMenuInsert_Y = nomenclature.contextMenuInsert_Y * 1080 / 1440;
+            //        excelTextField.ContextMenuInsert_X = excelTextField.ContextMenuInsert_X * 1980 / 2480;
+            //        excelTextField.ContextMenuInsert_Y = excelTextField.ContextMenuInsert_Y * 1080 / 1440;
 
-                    nomenclature.list_X = nomenclature.list_X * 1980 / 2480;
-                    nomenclature.list_Y = nomenclature.list_Y * 1080 / 1440;
+            //        addButton.Field_X = addButton.Field_X * 1980 / 2480;
+            //        addButton.Field_Y = addButton.Field_Y * 1080 / 1440;
 
-                    amount.field_X = amount.field_X * 1980 / 2480;
-                    amount.field_Y = amount.field_Y * 1080 / 1440;
+            //        nomenclature.Field_X = nomenclature.Field_X * 1980 / 2480;
+            //        nomenclature.Field_Y = nomenclature.Field_Y * 1080 / 1440;
 
-                    amount.contextMenuInsert_X = amount.contextMenuInsert_X * 1980 / 2480;
-                    amount.contextMenuInsert_Y = amount.contextMenuInsert_Y * 1080 / 1440;
+            //        nomenclature.ContextMenuInsert_X = nomenclature.ContextMenuInsert_X * 1980 / 2480;
+            //        nomenclature.ContextMenuInsert_Y = nomenclature.ContextMenuInsert_Y * 1080 / 1440;
 
-                    price.field_X = price.field_X * 1980 / 2480;
-                    price.field_Y = price.field_Y * 1080 / 1440;
+            //        nomenclature.List_X = nomenclature.List_X * 1980 / 2480;
+            //        nomenclature.List_Y = nomenclature.List_Y * 1080 / 1440;
 
-                    price.contextMenuInsert_X = price.contextMenuInsert_X * 1980 / 2480;
-                    price.contextMenuInsert_Y = price.contextMenuInsert_Y * 1080 / 1440;
+            //        amount.Field_X = amount.Field_X * 1980 / 2480;
+            //        amount.Field_Y = amount.Field_Y * 1080 / 1440;
 
-                    transferPrice.field_X = transferPrice.field_X * 1980 / 2480;
-                    transferPrice.field_Y = transferPrice.field_Y * 1080 / 1440;
+            //        amount.ContextMenuInsert_X = amount.ContextMenuInsert_X * 1980 / 2480;
+            //        amount.ContextMenuInsert_Y = amount.ContextMenuInsert_Y * 1080 / 1440;
 
-                    break;
+            //        price.Field_X = price.Field_X * 1980 / 2480;
+            //        price.Field_Y = price.Field_Y * 1080 / 1440;
 
-                default:
-                    break;
-            }
+            //        price.ContextMenuInsert_X = price.ContextMenuInsert_X * 1980 / 2480;
+            //        price.ContextMenuInsert_Y = price.ContextMenuInsert_Y * 1080 / 1440;
+
+            //        transferPrice.Field_X = transferPrice.Field_X * 1980 / 2480;
+            //        transferPrice.Field_Y = transferPrice.Field_Y * 1080 / 1440;
+
+            //        break;
+
+            //    default:
+            //        break;
+            //}
 
             // 1. Клик по ячейке Excel с названием номенклатуры
-            SetCursor(excelCell.field_X, excelCell.field_Y);
-            LeftMouseClick();
-            Thread.Sleep(stepTime);
+            //SetCursor(excelCell.Field_X, excelCell.Field_Y);
+            //LeftMouseClick();
+            //Thread.Sleep(stepTime);
 
-            for (int i = 0; i < amountOfRecords; i++)
-            {
-                // 2. Получение данных из ячейки и копирование в буфер
-                GetCellData();
+            //for (int i = 0; i < amountOfRecords; i++)
+            //{
+            //    // 2. Получение данных из ячейки и копирование в буфер
+            //    GetCellData();
 
-                // Переход к 1C
-                // 3. Установка курсора на кнопку "Добавить"
-                SetCursor(addButton.field_X, addButton.field_Y);
+            //    // Переход к 1C
+            //    // 3. Установка курсора на кнопку "Добавить"
+            //    SetCursor(addButton.Field_X, addButton.Field_Y);
 
-                if (i == 0)
-                {
-                    while (counter < 22) // Чтобы не обрабатывать сдвиги при добавлении записи
-                    {
-                        LeftMouseClick();
-                        Thread.Sleep(stepTime);
-                        counter++;
-                    }
-                }
-                LeftMouseClick();
+            //    if (i == 0)
+            //    {
+            //        while (counter < 22) // Чтобы не обрабатывать сдвиги при добавлении записи
+            //        {
+            //            LeftMouseClick();
+            //            Thread.Sleep(stepTime);
+            //            counter++;
+            //        }
+            //    }
+            //    LeftMouseClick();
 
-                // 4. Установка курсора на поле "Номенклатура"
-                SetCursor(nomenclature.field_X, nomenclature.field_Y);
-                LeftMouseDblClick();
-                Thread.Sleep(stepTime);
+            //    // 4. Установка курсора на поле "Номенклатура"
+            //    SetCursor(nomenclature.Field_X, nomenclature.Field_Y);
+            //    LeftMouseDblClick();
+            //    Thread.Sleep(stepTime);
 
-                // 5. Вставка текста
-                UseContextMenu(nomenclature.contextMenuInsert_X, nomenclature.contextMenuInsert_Y);
+            //    // 5. Вставка текста
+            //    UseContextMenu(nomenclature.ContextMenuInsert_X, nomenclature.ContextMenuInsert_Y);
 
-                // 6. Выбор номенклатуры из списка
-                SetCursor(nomenclature.list_X, nomenclature.list_Y);
-                LeftMouseClick();
-                Thread.Sleep(stepTime);
+            //    // 6. Выбор номенклатуры из списка
+            //    SetCursor(nomenclature.List_X, nomenclature.List_Y);
+            //    LeftMouseClick();
+            //    Thread.Sleep(stepTime);
 
-                // 7. Получение данных из следующей ячейки и копирование в буфер
-                GetCellData();
+            //    // 7. Получение данных из следующей ячейки и копирование в буфер
+            //    GetCellData();
 
-                // 8. Установка курсора на поле "Количество" 
-                SetCursor(amount.field_X, amount.field_Y);
-                LeftMouseDblClick();
-                LeftMouseDblClick();
-                Thread.Sleep(stepTime);
+            //    // 8. Установка курсора на поле "Количество" 
+            //    SetCursor(amount.Field_X, amount.Field_Y);
+            //    LeftMouseDblClick();
+            //    LeftMouseDblClick();
+            //    Thread.Sleep(stepTime);
 
-                // 9. Вставка текста
-                UseContextMenu(amount.contextMenuInsert_X, amount.contextMenuInsert_Y);
+            //    // 9. Вставка текста
+            //    UseContextMenu(amount.ContextMenuInsert_X, amount.ContextMenuInsert_Y);
 
-                // 10. Получение данных из следующей ячейки и копирование в буфер
-                GetCellData();
+            //    // 10. Получение данных из следующей ячейки и копирование в буфер
+            //    GetCellData();
 
-                // 11. Установка курсора на поле "Цена"
-                SetCursor(price.field_X, price.field_Y);
-                LeftMouseDblClick();
-                LeftMouseDblClick();
-                Thread.Sleep(stepTime);
+            //    // 11. Установка курсора на поле "Цена"
+            //    SetCursor(price.Field_X, price.Field_Y);
+            //    LeftMouseDblClick();
+            //    LeftMouseDblClick();
+            //    Thread.Sleep(stepTime);
 
-                // 12. Вставка текста
-                UseContextMenu(price.contextMenuInsert_X, price.contextMenuInsert_Y);
+            //    // 12. Вставка текста
+            //    UseContextMenu(price.ContextMenuInsert_X, price.ContextMenuInsert_Y);
 
-                switch (mode)
-                {
-                    case (int)Modes.realization:
-                        break;
+            //    switch (mode)
+            //    {
+            //        case (int)Modes.realization:
+            //            break;
 
-                    case (int)Modes.detalization:
-                        // 13. Установка курсора на поле "Цена передачи" 
-                        SetCursor(transferPrice.field_X, transferPrice.field_Y);
-                        LeftMouseDblClick();
-                        LeftMouseDblClick();
-                        Thread.Sleep(stepTime);
+            //        case (int)Modes.detalization:
+            //            // 13. Установка курсора на поле "Цена передачи" 
+            //            SetCursor(transferPrice.Field_X, transferPrice.Field_Y);
+            //            LeftMouseDblClick();
+            //            LeftMouseDblClick();
+            //            Thread.Sleep(stepTime);
 
-                        // 14. Стирание текста
-                        ClickKey(0x0e);
-                        break;
+            //            // 14. Стирание текста
+            //            ClickKey(0x0e);
+            //            break;
 
-                    default:
-                        break;
-                }
+            //        default:
+            //            break;
+            //    }
 
-                // 15. Переход к следующей записи
-                GoToNextRecord();
-            }
+            //    // 15. Переход к следующей записи
+            //    GoToNextRecord();
+            //}
 
             //// 16. Удаление пустых записей
             //while (counter > 0)
@@ -247,151 +253,6 @@ namespace MouseAndKeyboardCliker
 
         }
 
-        private static void UseContextMenu(int x, int y)
-        {
-            Thread.Sleep(stepTime);
-            RightMouseClick();
-            SetCursor(x, y); // Установка курсора на контекстное меню
-            Thread.Sleep(stepTime);
-            LeftMouseClick();
-            Thread.Sleep(stepTime);
-        }
 
-        private static void GetCellData()
-        {
-            // 1. Клик по полю с текстом ячейки
-            SetCursor(excelTextField.field_X, excelTextField.field_Y);
-            LeftMouseDblClick();
-            Thread.Sleep(stepTime);
-
-            // 2. Выбор всего текста в поле
-            SelectAll();
-            Thread.Sleep(stepTime);
-
-            // 3. Копирование текста
-            UseContextMenu(excelTextField.contextMenuInsert_X, excelTextField.contextMenuInsert_Y);
-
-            // 4. Переход к след. ячейке
-            ClickKey(0x0f);
-            Thread.Sleep(stepTime);
-        }
-
-        private static void GoToNextRecord()
-        {
-            // 1. Клик по полю с текстом ячейки
-            SetCursor(excelTextField.field_X, excelTextField.field_Y);
-            LeftMouseClick();
-            Thread.Sleep(stepTime);
-
-            // 2. Шаг на клетку вниз
-            PressSpecButton(0x50);
-            Thread.Sleep(stepTime);
-
-            // 3. Три шага на клетку влево
-            PressSpecButton(0x4B);
-            Thread.Sleep(stepTime);
-            PressSpecButton(0x4B);
-            Thread.Sleep(stepTime);
-            PressSpecButton(0x4B);
-            Thread.Sleep(stepTime);
-        }
-
-        private static void DeleteRecord()
-        {
-            // 1. Установка курсора на запись
-            SetCursor(240, 760);
-            LeftMouseClick();
-
-            // 2. Удаление
-            UseContextMenu(280, 790);
-        }
-
-
-        #region Мышь
-
-        private static void SetCursor(int x, int y)
-        {
-            SetCursorPosition(x, y);
-        }
-
-        private static void RightMouseClick()
-        {
-            SendMouseInput(new MouseInput[]
-            {
-                new MouseInput
-                {
-                    dwFlags = (uint)MouseEventF.RightDown
-                },
-                new MouseInput
-                {
-                    dwFlags = (uint)MouseEventF.RightUp
-                }
-            });
-        }
-
-        private static void LeftMouseClick()
-        {
-            SendMouseInput(new MouseInput[]
-            {
-                new MouseInput
-                {
-                    dwFlags = (uint)MouseEventF.LeftDown
-                },
-                new MouseInput
-                {
-                    dwFlags = (uint)MouseEventF.LeftUp
-                }
-            });
-        }
-
-        private static void LeftMouseDblClick()
-        {
-            LeftMouseClick();
-            LeftMouseClick();
-        }
-
-        private static void SelectAll()
-        {
-            LeftMouseClick();
-            LeftMouseClick();
-            LeftMouseClick();
-        }
-
-        #endregion
-
-
-        #region Клавиатура
-       
-        // https://gist.github.com/dretax/fe37b8baf55bc30e9d63
-        //private static void ClickKey(ushort code)
-        //{
-        //    SendKeyboardInput(new KeyboardInput[]
-        //    {
-        //        new KeyboardInput
-        //        {
-        //            wScan = code,
-        //            dwFlags = (uint)(KeyEventF.ExtendedKey | KeyEventF.Scancode)
-        //        }
-        //    });
-        //}
-
-        private static void PressSpecButton(ushort code)
-        {
-            SendKeyboardInput(new KeyboardInput[]
-            {
-                new KeyboardInput
-                {
-                    wScan = 0xe0,
-                    dwFlags = (uint)(KeyEventF.ExtendedKey | KeyEventF.Scancode),
-                },
-                new KeyboardInput
-                {
-                    wScan = code,
-                    dwFlags = (uint)(KeyEventF.ExtendedKey | KeyEventF.Scancode)
-                }
-            });
-        }
-
-        #endregion
     }
 }
