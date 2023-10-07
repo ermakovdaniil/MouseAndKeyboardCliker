@@ -38,9 +38,13 @@ namespace MouseAndKeyboardCliker
 
             _addButton = new ElementCoords(200, 705);
 
-            _nomenclature = new ElementCoords(250, 990);
-            _nomenclature.ContextMenuInsert = new Coords(_nomenclature.Field.X + 50, _nomenclature.Field.Y -20);
-            _nomenclature.List = new Coords(300, 920);
+            //_nomenclature = new ElementCoords(260, 1010);
+            //_nomenclature.ContextMenuInsert = new Coords(_nomenclature.Field.X + 50, _nomenclature.Field.Y - 20);
+            //_nomenclature.List = new Coords(300, 940);
+
+            _nomenclature = new ElementCoords(260, 990);
+            _nomenclature.ContextMenuInsert = new Coords(_nomenclature.Field.X + 50, _nomenclature.Field.Y);
+            _nomenclature.List = new Coords(300, 1010);
 
             _amount = new ElementCoords(750, _nomenclature.Field.Y);
             _amount.ContextMenuInsert = new Coords(800, _nomenclature.ContextMenuInsert.Y);

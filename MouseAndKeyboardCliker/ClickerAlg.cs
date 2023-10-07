@@ -14,7 +14,7 @@ namespace MouseAndKeyboardCliker
         [DllImport("user32.dll")]
         protected static extern IntPtr GetMessageExtraInfo();
 
-        protected static int stepTime = 430;
+        protected static int stepTime = 420;
 
         protected abstract void ModesAdditionalTasks();
 
@@ -45,7 +45,7 @@ namespace MouseAndKeyboardCliker
 
                 if (i == 0)
                 {
-                    while (counter < 22) // Чтобы не обрабатывать сдвиги при добавлении записи
+                    while (counter < 24) // Чтобы не обрабатывать сдвиги при добавлении записи
                     {
                         LeftMouseClick();
                         Thread.Sleep(stepTime);
