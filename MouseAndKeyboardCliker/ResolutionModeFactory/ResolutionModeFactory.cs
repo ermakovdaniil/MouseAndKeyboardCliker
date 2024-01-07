@@ -16,14 +16,25 @@ namespace MouseAndKeyboardCliker
                 case ScreenResolutions.QuadHD:
                     switch (mode)
                     {
-                        case Modes.realization: 
+                        case Modes.realization:
                             return new Realization_QuadHD();
 
                         case Modes.detalization:
                             return new Detalization_QuadHD();
                     }
                     break;
-                
+
+                case ScreenResolutions.FullHD:
+                    switch (mode)
+                    {
+                        case Modes.realization:
+                            return new Realization_FullHD();
+
+                        case Modes.detalization:
+                            return new Detalization_FullHD();
+                    }
+                    break;
+
             }
             return null;
         }

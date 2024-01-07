@@ -32,20 +32,20 @@ namespace MouseAndKeyboardCliker
 
         public Detalization_FullHD()
         {
-            _excelCell = new ElementCoords(1020, 293);
+            _excelCell = new ElementCoords(1020, 260);
 
             _excelTextField = new ElementCoords(1220, 180, 1250, 215);
 
-            _addButton = new ElementCoords(150, 555);
+            _addButton = new ElementCoords(150, 540);
 
-            _nomenclature = new ElementCoords(200, 770);
-            _nomenclature.ContextMenuInsert = new Coords(_nomenclature.Field.X + 40, _nomenclature.Field.Y - 15);
-            _nomenclature.List = new Coords(240, 720);
+            _nomenclature = new ElementCoords(200, 750);
+            _nomenclature.ContextMenuInsert = new Coords(_nomenclature.Field.X + 40, _nomenclature.Field.Y);
+            _nomenclature.List = new Coords(240, 765);
 
-            _amount = new ElementCoords(570, _nomenclature.Field.Y);
+            _amount = new ElementCoords(550, _nomenclature.Field.Y);
             _amount.ContextMenuInsert = new Coords(610, _nomenclature.ContextMenuInsert.Y);
 
-            _price = new ElementCoords(690, _nomenclature.Field.Y);
+            _price = new ElementCoords(700, _nomenclature.Field.Y);
             _price.ContextMenuInsert = new Coords(730, _nomenclature.ContextMenuInsert.Y);
 
             _transferPrice = new ElementCoords(850, _nomenclature.Field.Y);
