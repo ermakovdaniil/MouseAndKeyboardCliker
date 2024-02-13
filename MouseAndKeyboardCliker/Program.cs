@@ -21,7 +21,7 @@ namespace MouseAndKeyboardCliker
             var resolution = (ScreenResolutions)Enum.Parse(typeof(ScreenResolutions), Console.ReadLine());
 
             Console.WriteLine("Режим работы: ");
-            Console.WriteLine("1. Реализация | 2. Детализация за неделю ");
+            Console.WriteLine("1. Реализация |  2. Детализация за неделю ");
             var mode = (Modes)Enum.Parse(typeof(Modes), Console.ReadLine());
 
             Console.WriteLine("\nУкажите количество записей: ");

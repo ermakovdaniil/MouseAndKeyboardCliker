@@ -36,15 +36,15 @@ namespace MouseAndKeyboardCliker
 
             _excelTextField = new ElementCoords(1540, 190, 1575, 230);
 
-            _addButton = new ElementCoords(200, 705);
+            _addButton = new ElementCoords(200, 655);
 
             //_nomenclature = new ElementCoords(260, 1010);
             //_nomenclature.ContextMenuInsert = new Coords(_nomenclature.Field.X + 50, _nomenclature.Field.Y - 20);
             //_nomenclature.List = new Coords(300, 940);
 
-            _nomenclature = new ElementCoords(260, 990);
-            _nomenclature.ContextMenuInsert = new Coords(_nomenclature.Field.X + 50, _nomenclature.Field.Y);
-            _nomenclature.List = new Coords(300, 1010);
+            _nomenclature = new ElementCoords(260, 960);
+            _nomenclature.ContextMenuInsert = new Coords(_nomenclature.Field.X + 50, _nomenclature.Field.Y + 10);
+            _nomenclature.List = new Coords(300, 980);
 
             _amount = new ElementCoords(750, _nomenclature.Field.Y);
             _amount.ContextMenuInsert = new Coords(800, _nomenclature.ContextMenuInsert.Y);
